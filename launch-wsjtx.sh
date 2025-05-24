@@ -2,7 +2,7 @@
 # ~/launch_wsjtx.sh
 # Launch Timey-Wimey GUI and WSJT-X with libfaketime
 
-set -euo pipefail
+set -eu pipefail
 
 # Execute timey-wimey
 python3 "$HOME/timey-wimey/timey_gui.py" &
