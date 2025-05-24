@@ -1,23 +1,44 @@
-# timey-wimey
+# Timey-Wimey WSJT-X Launcher
 
-timey-wimey is a tool which allows you to fake the time read by WSJT-X. It uses a file called .faketimerc which lives in your home directory.
+**Timey-Wimey** is a Linux utility for ham radio operators using FT8 mode who want to temporarily adjust the perceived system clock (via `libfaketime`) **only for WSJT-X**, without affecting the rest of their system.
+
+It includes a simple GUI slider for setting an offset of ±3 seconds in 0.05s increments and launches WSJT-X with that offset.
 
 Experimental Tool. Use at Your Own Risk.
 
-## Installation
+## Features
 
-This tool requires the presence of libfaketime and the faketime wrapper. The souce can be found at https://github.com/wolfcw/libfaketime, but you may be able to install it using your package manager, as shown below.
+- Fake system time only for WSJT-X (using `libfaketime`)
+- Simple GUI with a vertical slider
+- Respects high-resolution time APIs
+- Safe and reversible — does not touch actual system clock
+
+## Requirements
+
+- Linux
+- `libfaketime` (e.g., `sudo apt install libfaketime` or build from source at at https://github.com/wolfcw/libfaketime)
+- `tkinter` for GUI (typically preinstalled with Python)
+- WSJT-X installed and in your `$PATH`
+
+
+## Installation
 
 ```bash
 git clone https://github.com/Roon/timey-wimey.git
-sudo apt-get install faketime
+cd timey-wimey
+chmod +x launch_wsjtx.sh
 ```
 
 ## Usage
 
 ```bash
-sh ./timey-wimey/launch-wsjtx.sh
+sh ./launch-wsjtx.sh
 ```
+
+## Notes
+The time offset is stored in ~/.faketimerc
+
+This tool does not modify your system time globally.
 
 ## Contributing
 
