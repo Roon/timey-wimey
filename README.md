@@ -40,6 +40,8 @@ The time offset is stored in ~/.faketimerc
 
 This tool does not modify your system time globally.
 
+When adjusting the time in a negative direction, WSJT-X waits the amount of the time delta before accepting the new time. 
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
