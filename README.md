@@ -26,7 +26,7 @@ Experimental Tool. Use at Your Own Risk.
 ```bash
 git clone https://github.com/Roon/timey-wimey.git
 cd timey-wimey
-chmod +x launch_wsjtx.sh
+chmod +x ./launch_wsjtx.sh
 ```
 
 ## Usage
