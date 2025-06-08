@@ -17,8 +17,8 @@ Experimental Tool. Use at Your Own Risk.
 
 - Linux
 - `libfaketime` (e.g., `sudo apt install libfaketime` or build from source at at https://github.com/wolfcw/libfaketime)
-- `tkinter` for GUI (typically preinstalled with Python)
-- WSJT-X installed and in your `$PATH`
+- `tkinter` for GUI (typically preinstalled with Python, or `sudo apt install python3-tk`) 
+- WSJT-X installed and in your `$PATH` (`sudo apt install wsjtx`)
 
 
 ## Installation
@@ -26,7 +26,7 @@ Experimental Tool. Use at Your Own Risk.
 ```bash
 git clone https://github.com/Roon/timey-wimey.git
 cd timey-wimey
-chmod +x ./launch_wsjtx.sh
+chmod +x ./launch-wsjtx.sh
 ```
 
 ## Usage
