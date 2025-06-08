@@ -1,5 +1,5 @@
 #!/bin/bash
-# ~/launch_wsjtx.sh
+# ~/launch-wsjtx.sh
 # Launch Timey-Wimey GUI and WSJT-X with libfaketime
 
 set -eu pipefail
@@ -12,8 +12,8 @@ env \
         FAKETIME_NO_CACHE=1 \
         FAKETIME_CLOCK=real \
         FAKETIME_MONOTONIC=1 \
-        LD_PRELOAD=/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1 \
-        /usr/bin/wsjtx
+        LD_PRELOAD=$(dpkg -L libfaketime | grep libfaketime.so.1) \
+        wsjtx
 
 exit 0
 
