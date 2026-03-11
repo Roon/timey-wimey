@@ -69,8 +69,8 @@ def main():
     root = tkinter.Tk()
     root.withdraw()
 
-    lib_path = find_libfaketime()
-    if lib_path is None:
+    _lib_path = find_libfaketime()
+    if _lib_path is None:
         tkinter.messagebox.showerror(
             "Missing dependency",
             "libfaketime not found.\n\n"
@@ -84,7 +84,6 @@ def main():
     root.title("Timey-Wimey")
     root.geometry('350x800')
     root.deiconify()
-
 
     scale = tkinter.Scale(root, from_=3, to=-3, orient='vertical', length=750,
                      tickinterval=0.5, resolution=0.05, label='Value',
