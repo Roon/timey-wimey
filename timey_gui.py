@@ -38,6 +38,13 @@ def find_libfaketime():
     return None
 
 
+def format_offset_label(value: float) -> str:
+    """Return the display string for the offset status label."""
+    if value == 0.0:
+        return "Offset: 0.00s (no adjustment)"
+    return f"Offset: {value:+.2f}s"
+
+
 def main():
     """Launches a Tkinter GUI for adjusting and saving a time offset value.
 

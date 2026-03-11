@@ -49,3 +49,20 @@ class TestFindLibfaketime:
                 timey_gui.main()
         mock_error.assert_called_once()
         mock_exit.assert_called_once_with(1)
+
+
+class TestFormatOffsetLabel:
+    def test_positive_value(self):
+        assert timey_gui.format_offset_label(0.5) == "Offset: +0.50s"
+
+    def test_negative_value(self):
+        assert timey_gui.format_offset_label(-1.0) == "Offset: -1.00s"
+
+    def test_zero(self):
+        assert timey_gui.format_offset_label(0.0) == "Offset: 0.00s (no adjustment)"
+
+    def test_positive_large(self):
+        assert timey_gui.format_offset_label(3.0) == "Offset: +3.00s"
+
+    def test_negative_large(self):
+        assert timey_gui.format_offset_label(-3.0) == "Offset: -3.00s"
