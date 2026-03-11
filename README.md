@@ -32,7 +32,7 @@ chmod +x ./launch-wsjtx.sh
 ## Usage
 
 ```bash
-sh ./launch-wsjtx.sh
+./launch-wsjtx.sh
 ```
 
 ## Notes
