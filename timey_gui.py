@@ -1,5 +1,40 @@
 import tkinter
 import os
+import glob
+import subprocess
+
+
+def find_libfaketime():
+    """Return the path to libfaketime.so if found, or None."""
+    try:
+        result = subprocess.run(
+            ["ldconfig", "-p"],
+            capture_output=True, text=True, timeout=5
+        )
+        for line in result.stdout.splitlines():
+            if "libfaketime.so" in line:
+                parts = line.split(" => ", 1)
+                if len(parts) == 2:
+                    path = parts[1].strip()
+                    if os.path.isfile(path):
+                        return path
+    except Exception:
+        pass
+
+    fallback_patterns = [
+        "/usr/lib/libfaketime.so*",
+        "/usr/local/lib/libfaketime.so*",
+        "/usr/lib/x86_64-linux-gnu/libfaketime.so*",
+        "/usr/lib/aarch64-linux-gnu/libfaketime.so*",
+    ]
+    for pattern in fallback_patterns:
+        matches = glob.glob(pattern)
+        for match in matches:
+            if os.path.isfile(match):
+                return match
+
+    return None
+
 
 def main():
     """Launches a Tkinter GUI for adjusting and saving a time offset value.
