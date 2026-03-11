@@ -56,12 +56,14 @@ def main():
     faketime_config = os.path.join(home_directory, filename)
 
     def set_fakename(my_value, outfile):
-        my_value = f"{float(my_value):+.2f}s"
+        value = float(my_value)
         with open(outfile, "w") as f:
-            f.write(my_value + "\n")
+            f.write(f"{value:+.2f}s\n")
+        status_label.config(text=format_offset_label(value))
 
     def reset_scale():
         scale.set(0)
+        status_label.config(text=format_offset_label(0.0))
 
     # Create root window hidden until dependency check passes
     root = tkinter.Tk()
@@ -91,6 +93,9 @@ def main():
 
     reset_button = tkinter.Button(root, text="Reset", command=reset_scale)
     reset_button.pack()
+
+    status_label = tkinter.Label(root, text=format_offset_label(0.0))
+    status_label.pack()
 
     # Execute Tkinter
     root.mainloop()
