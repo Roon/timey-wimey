@@ -39,4 +39,5 @@ def main():
     # Execute Tkinter
     root.mainloop()
 
-main()
+if __name__ == "__main__":
+    main()
