@@ -188,6 +188,7 @@ The function returns the path to the libfaketime `.so` if found, or `None` if no
 
   Replace `tests/test_timey_gui.py` with:
   ```python
+  import pytest
   from unittest.mock import patch, MagicMock
   import timey_gui
 
@@ -354,18 +355,21 @@ The check runs before the main window appears. Tkinter requires a root window be
   Add the following test to `TestFindLibfaketime` in `tests/test_timey_gui.py` (append inside the class):
   ```python
       def test_startup_shows_error_and_exits_when_not_found(self):
-          """main() shows an error dialog and calls sys.exit(1) when libfaketime is missing."""
+          """main() shows an error dialog and sys.exit(1) when libfaketime is missing."""
           with patch("timey_gui.find_libfaketime", return_value=None), \
                patch("timey_gui.tkinter.messagebox.showerror") as mock_error, \
-               patch("timey_gui.sys.exit") as mock_exit, \
+               patch("timey_gui.sys.exit", side_effect=SystemExit(1)) as mock_exit, \
                patch("timey_gui.tkinter.Tk"):
-              timey_gui.main()
+              with pytest.raises(SystemExit):
+                  timey_gui.main()
           mock_error.assert_called_once()
           mock_exit.assert_called_once_with(1)
   ```
 
+  Also add `import pytest` to the imports at the top of `tests/test_timey_gui.py`.
+
   Run: `pytest tests/test_timey_gui.py::TestFindLibfaketime::test_startup_shows_error_and_exits_when_not_found -v`
-  Expected: FAIL (the main() restructure from Step 2 hasn't been applied yet to make this pass — that's correct TDD order. If the test somehow passes, re-read `timey_gui.py` to confirm Step 2 was applied first.)
+  Expected: FAIL (the main() restructure from Step 2 hasn't been applied yet — that's correct TDD order.)
 
 - [ ] **Step 4: Verify the check works manually without libfaketime**
 
@@ -466,7 +470,7 @@ The label-text formatting is a pure function — extract it to test it without a
 
 Wire `format_offset_label` into the Tkinter layout. The label appears below the Reset button and updates on every slider change. The `set_fakename` and `reset_scale` inner functions reference `status_label` via Python's late-binding closure, so `status_label` only needs to be assigned before `root.mainloop()` is called (not before the inner functions are defined).
 
-**Step ordering is critical:** Step 1 (creating `status_label`) MUST be applied before Steps 2 and 3. Both `set_fakename` and `reset_scale` reference `status_label` — if the closures are called before `status_label` is assigned, a `NameError` results. Applying Step 1 first ensures `status_label` exists in `main()`'s local scope by the time either function is invoked.
+**Step ordering is critical:** Step 1 (creating `status_label`) MUST be applied before Steps 2 and 3. Both `set_fakename` and `reset_scale` reference `status_label` as a closure variable. Python closures are late-binding — `status_label` is looked up at call time, not at definition time — so the functions can be defined before `status_label` is assigned, as long as `status_label` exists by the time `root.mainloop()` starts. Tkinter only invokes widget callbacks (Scale command, Button command) after `mainloop()` begins, and `mainloop()` is the last statement in `main()`, after `status_label` is created. The same late-binding pattern is already used by `reset_scale` referencing `scale` in the current code. Applying Step 1 before Steps 2/3 is required so the replacement code has a `status_label` to reference.
 
 - [ ] **Step 1: Add the `status_label` widget immediately after `reset_button.pack()`**
 
