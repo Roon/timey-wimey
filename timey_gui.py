@@ -1,7 +1,9 @@
 import tkinter
+import tkinter.messagebox
 import os
 import glob
 import subprocess
+import sys
 
 
 def find_libfaketime():
@@ -54,13 +56,25 @@ def main():
     def reset_scale():
         scale.set(0)
 
-    # create root window
+    # Create root window hidden until dependency check passes
     root = tkinter.Tk()
+    root.withdraw()
 
-    # root window title and dimension
+    lib_path = find_libfaketime()
+    if lib_path is None:
+        tkinter.messagebox.showerror(
+            "Missing dependency",
+            "libfaketime not found.\n\n"
+            "Install it with:\n"
+            "  sudo apt install libfaketime\n\n"
+            "Or build from source:\n"
+            "  https://github.com/wolfcw/libfaketime"
+        )
+        sys.exit(1)
+
     root.title("Timey-Wimey")
-    # Set geometry(widthxheight)
     root.geometry('350x800')
+    root.deiconify()
 
 
     scale = tkinter.Scale(root, from_=3, to=-3, orient='vertical', length=750,

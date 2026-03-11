@@ -38,3 +38,14 @@ class TestFindLibfaketime:
             mock_run.return_value = MagicMock(stdout="", returncode=0)
             result = timey_gui.find_libfaketime()
         assert result is None
+
+    def test_startup_shows_error_and_exits_when_not_found(self):
+        """main() shows an error dialog and sys.exit(1) when libfaketime is missing."""
+        with patch("timey_gui.find_libfaketime", return_value=None), \
+             patch("timey_gui.tkinter.messagebox.showerror") as mock_error, \
+             patch("timey_gui.sys.exit", side_effect=SystemExit(1)) as mock_exit, \
+             patch("timey_gui.tkinter.Tk"):
+            with pytest.raises(SystemExit):
+                timey_gui.main()
+        mock_error.assert_called_once()
+        mock_exit.assert_called_once_with(1)
