@@ -83,7 +83,7 @@ def main():
         sys.exit(1)
 
     root.title("Timey-Wimey")
-    root.geometry('350x800')
+    root.geometry('350x850')
     root.deiconify()
 
     scale = tkinter.Scale(root, from_=3, to=-3, orient='vertical', length=750,
