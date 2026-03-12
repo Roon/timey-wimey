@@ -5,16 +5,25 @@
 set -euo pipefail
 
 # Find libfaketime shared library
-LIBFAKETIME_PATH=$(ldconfig -p | grep 'libfaketime\.so' | awk -F' => ' '{print $2}' | head -1)
+LIBFAKETIME_PATH=$(dpkg -L libfaketime | grep libfaketime.so.1)
 # Verify the ldconfig result actually exists on disk
 [ -n "$LIBFAKETIME_PATH" ] && [ ! -e "$LIBFAKETIME_PATH" ] && LIBFAKETIME_PATH=""
+
+
 if [ -z "$LIBFAKETIME_PATH" ]; then
-    for dir in /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu /usr/lib/aarch64-linux-gnu; do
+   LIBFAKETIME_PATH=$(ldconfig -p | grep 'libfaketime\.so' | awk -F' => ' '{print $2}' | head -1)
+fi
+
+
+if [ -z "$LIBFAKETIME_PATH" ]; then
+    for dir in /usr/lib /usr/local/lib /usr/lib/x86_64-linux-gnu /usr/lib/aarch64-linux-gnu /usr/lib/x86_64-linux-gnu/faketime ; do
         for f in "$dir"/libfaketime.so*; do
             [ -e "$f" ] && LIBFAKETIME_PATH="$f" && break 2
         done
     done
 fi
+
+
 if [ -z "$LIBFAKETIME_PATH" ]; then
     echo "libfaketime not found. Install it with: sudo apt install libfaketime"
     echo "Or build from source: https://github.com/wolfcw/libfaketime"
