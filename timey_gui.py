@@ -27,6 +27,7 @@ def find_libfaketime():
         "/usr/lib/libfaketime.so*",
         "/usr/local/lib/libfaketime.so*",
         "/usr/lib/x86_64-linux-gnu/libfaketime.so*",
+        "/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so*",
         "/usr/lib/aarch64-linux-gnu/libfaketime.so*",
     ]
     for pattern in fallback_patterns:
